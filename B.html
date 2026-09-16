@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insurance & Loans | Prajwal</title><style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+body{background:#0b1120;color:white;scroll-behavior:smooth}
+
+/* NAV */
+nav{
+ position:fixed;width:100%;top:0;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:15px 40px;
+ background:rgba(255,255,255,0.05);
+ backdrop-filter:blur(10px);
+ z-index:1000;
+}
+nav h1{color:#38bdf8}
+nav ul{display:flex;gap:25px;list-style:none}
+nav li{cursor:pointer}
+nav li:hover{color:#38bdf8}
+
+/* HERO */
+.hero{
+ height:100vh;display:flex;flex-direction:column;
+ justify-content:center;align-items:center;text-align:center;padding:20px
+}
+.hero h2{font-size:45px;background:linear-gradient(90deg,#38bdf8,#6366f1);-webkit-background-clip:text;color:transparent}
+.hero p{max-width:600px;margin:20px 0;color:#cbd5e1}
+.btn{
+ padding:12px 25px;border:none;border-radius:30px;
+ background:linear-gradient(90deg,#38bdf8,#6366f1);
+ color:white;cursor:pointer
+}
+
+/* SECTION */
+section{padding:100px 20px;text-align:center}
+.grid{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:20px;margin-top:40px
+}
+.card{
+ background:rgba(255,255,255,0.05);
+ padding:25px;border-radius:15px;
+ border:1px solid rgba(255,255,255,0.1)
+}
+
+/* STATS */
+.stats{
+ display:flex;justify-content:center;gap:40px;margin-top:30px;flex-wrap:wrap
+}
+.stat{font-size:22px}
+
+/* FORM */
+form{
+ max-width:500px;margin:auto;margin-top:30px;
+ display:flex;flex-direction:column;gap:15px
+}
+input,textarea{
+ padding:12px;border:none;border-radius:8px;
+ background:#1e293b;color:white
+}
+
+/* FOOTER */
+footer{text-align:center;padding:20px;color:#94a3b8}
+
+/* WHATSAPP */
+.whatsapp{
+ position:fixed;bottom:20px;right:20px;
+ background:#25D366;color:white;
+ padding:15px;border-radius:50%;
+ cursor:pointer
+}
+</style></head><body><nav>
+<h1>RAM Insurance</h1>
+<ul>
+<li onclick="go('home')">Home</li>
+<li onclick="go('services')">Services</li>
+<li onclick="go('contact')">Contact</li>
+</ul>
+</nav><!-- HERO --><div class="hero" id="home">
+<h2>Secure Your Life & Assets</h2>
+<p>We provide trusted insurance and loan solutions for families and businesses.</p>
+<button class="btn" onclick="go('contact')">Get Free Consultation</button>
+</div><!-- SERVICES --><section id="services">
+<h2>Our Services</h2>
+<div class="grid">
+<div class="card">🚗 Vehicle Insurance</div>
+<div class="card">❤️ Life Insurance</div>
+<div class="card">🏥 Health Insurance</div>
+<div class="card">🏠 Home Loans</div>
+<div class="card">💼 Business Loans</div>
+<div class="card">💰 Personal Loans</div>
+</div>
+</section><!-- TRUST --><section>
+<h2>Why Choose Us?</h2>
+<div class="grid">
+<div class="card">✔ Trusted Advisors</div>
+<div class="card">✔ Fast Processing</div>
+<div class="card">✔ Best Market Rates</div>
+</div>
+</section><!-- STATS --><section>
+<h2>Our Impact</h2>
+<div class="stats">
+<div class="stat">500+ Clients</div>
+<div class="stat">10+ Years Experience</div>
+<div class="stat">24/7 Support</div>
+</div>
+</section><!-- CONTACT --><section id="contact">
+<h2>Contact Us</h2><form onsubmit="submitForm(event)">
+<input type="text" placeholder="Your Name" required>
+<input type="tel" placeholder="Phone Number" required>
+<textarea placeholder="Your Requirement"></textarea>
+<button class="btn">Submit</button>
+</form></section><footer>
+© 2026 RAM Insurance. All rights reserved.
+</footer><div class="whatsapp" onclick="whatsapp()">💬</div><script>
+function go(id){
+ document.getElementById(id).scrollIntoView({behavior:'smooth'})
+}
+
+function whatsapp(){
+ window.open("https://wa.me/91XXXXXXXXXX","_blank")
+}
+
+function submitForm(e){
+ e.preventDefault()
+ alert("Form submitted! (Connect backend for real use)")
+}
+</script></body>
+</html>
