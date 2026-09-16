@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clean Landing Page</title>  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      scroll-behavior: smooth;
+    }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 1000;
+    }
+
+    nav h1 {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+    }
+
+    nav ul li {
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav ul li:hover {
+      color: #38bdf8;
+    }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin-bottom: 30px;
+      color: #cbd5f5;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #38bdf8, #6366f1);
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(99,102,241,0.6);
+    }
+
+    /* SECTION */
+    section {
+      padding: 100px 20px;
+      text-align: center;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .card {
+      padding: 25px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 32px;
+      }
+    }
+  </style></head><body>  <!-- NAVBAR -->  <nav>
+    <h1>Prajwal.dev</h1>
+    <ul>
+      <li onclick="scrollToSection('home')">Home</li>
+      <li onclick="scrollToSection('features')">Features</li>
+      <li onclick="scrollToSection('contact')">Contact</li>
+    </ul>
+  </nav>  <!-- HERO -->  <div class="hero" id="home">
+    <h2>Build Modern Websites</h2>
+    <p>Create clean, responsive and high-performance web experiences using HTML, CSS, and JavaScript.</p>
+    <button class="btn" onclick="scrollToSection('features')">Get Started</button>
+  </div>  <!-- FEATURES -->  <section id="features">
+    <h2>Features</h2><div class="features">
+  <div class="card">⚡ Fast Performance</div>
+  <div class="card">📱 Fully Responsive</div>
+  <div class="card">🎨 Modern UI Design</div>
+</div>
+
+  </section>  <!-- CONTACT -->  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: prajwal@example.com</p>
+  </section>  <!-- FOOTER -->  <footer>
+    © 2026 Prajwal. All rights reserved.
+  </footer>  <!-- JS -->  <script>
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  </script></body>
+</html>
