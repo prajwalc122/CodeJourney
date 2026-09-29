@@ -1,0 +1,717 @@
+# NINJA — Production-Grade Security & Protection Upgrade
+
+Upgrade the existing **NINJA Personal Web Command Center** into a secure, production-ready application.
+
+## IMPORTANT
+
+Do NOT redesign or remove the existing NINJA features.
+
+Keep the current:
+
+* UI/UX
+* branding
+* navigation
+* command launcher
+* animations
+* responsive design
+* existing working functionality
+
+Improve the application primarily from a **security, privacy, reliability, and backend architecture** perspective.
+
+---
+
+# 1. HTTPS & Transport Security
+
+Ensure the production application uses HTTPS.
+
+Implement:
+
+* HTTPS-only production access
+* HSTS where supported
+* Secure cookie configuration
+* No sensitive information transmitted over insecure HTTP
+* Redirect HTTP → HTTPS when infrastructure supports it
+
+---
+
+# 2. Authentication Security
+
+If authentication exists, make it production-grade.
+
+Implement:
+
+* Secure signup/login
+* Password hashing using Argon2 or bcrypt
+* Never store plaintext passwords
+* Strong password requirements
+* Secure session/token management
+* Account logout
+* Session expiration
+* Protection against brute-force login attempts
+* Password reset flow with secure, expiring tokens
+
+Never expose:
+
+* passwords
+* password hashes
+* authentication secrets
+* private tokens
+
+to the frontend.
+
+---
+
+# 3. JWT Security
+
+If JWT authentication is used:
+
+Implement:
+
+* Strong randomly generated JWT secret
+* JWT expiration
+* Access-token expiration
+* Secure refresh-token strategy where required
+* Token validation on every protected backend request
+* Reject expired/invalid/tampered tokens
+* Never hard-code JWT secrets in source code
+
+Store secrets only in environment variables.
+
+Example:
+
+```env
+JWT_SECRET=your_secure_random_secret
+MONGODB_URI=your_database_connection
+GEMINI_API_KEY=your_private_key
+```
+
+Never commit `.env` files to GitHub.
+
+---
+
+# 4. Authorization
+
+Implement proper authorization.
+
+Separate:
+
+```text
+Authentication
+→ Who is the user?
+
+Authorization
+→ What is the user allowed to do?
+```
+
+Create role-based access control where required:
+
+```text
+USER
+ADMIN
+```
+
+Admin-only operations must be verified on the backend.
+
+Never rely only on frontend route protection.
+
+---
+
+# 5. API Security
+
+Secure every backend API endpoint.
+
+Implement:
+
+* Authentication middleware
+* Authorization middleware
+* Request validation
+* Response validation where useful
+* Rate limiting
+* Request size limits
+* Proper HTTP status codes
+* Generic error responses
+
+Example:
+
+```text
+Request
+   ↓
+Rate Limiter
+   ↓
+Authentication
+   ↓
+Authorization
+   ↓
+Input Validation
+   ↓
+Business Logic
+   ↓
+Database
+```
+
+Never allow users to directly manipulate protected database operations.
+
+---
+
+# 6. Input Validation
+
+Validate and sanitize all user-controlled input.
+
+Protect against:
+
+* XSS
+* NoSQL injection
+* SQL injection where applicable
+* Command injection
+* Malformed requests
+* Oversized payloads
+* Malicious URLs
+
+Use a trusted validation library appropriate to the chosen backend stack.
+
+Never trust frontend validation alone.
+
+---
+
+# 7. XSS Protection
+
+Protect NINJA from Cross-Site Scripting.
+
+Requirements:
+
+* Sanitize user-generated content
+* Avoid unsafe HTML injection
+* Avoid unnecessary `innerHTML`
+* Escape dynamic content
+* Implement Content Security Policy where practical
+
+If HTML rendering is absolutely required, sanitize it before rendering.
+
+---
+
+# 8. CORS Protection
+
+Configure CORS securely.
+
+Do NOT use:
+
+```text
+Access-Control-Allow-Origin: *
+```
+
+for authenticated/private APIs unless there is a specific justified reason.
+
+Allow only trusted production frontend origins.
+
+Example:
+
+```env
+FRONTEND_URL=https://your-production-domain.com
+```
+
+---
+
+# 9. Security Headers
+
+Add appropriate security headers, including where compatible:
+
+```text
+Content-Security-Policy
+Strict-Transport-Security
+X-Content-Type-Options
+Referrer-Policy
+Permissions-Policy
+Frame protection
+```
+
+Configure CSP carefully so existing NINJA functionality continues working.
+
+---
+
+# 10. API Keys & Secrets
+
+CRITICAL:
+
+Never expose private API keys inside:
+
+```text
+HTML
+CSS
+frontend JavaScript
+GitHub repository
+public environment variables
+client-side source maps
+```
+
+For Gemini or other AI APIs:
+
+```text
+Frontend
+   ↓
+NINJA Backend
+   ↓
+Private API Key
+   ↓
+AI Provider
+```
+
+The frontend must communicate with the backend rather than exposing private provider credentials.
+
+Use server-side environment variables.
+
+---
+
+# 11. Database Security
+
+Secure the database.
+
+Implement:
+
+* Strong database credentials
+* Least-privilege database access
+* Restricted network access where supported
+* Input validation
+* Safe queries
+* Connection encryption
+* Production backups
+* No database credentials in frontend code
+
+Never expose MongoDB connection strings publicly.
+
+---
+
+# 12. Rate Limiting
+
+Implement rate limiting for sensitive endpoints.
+
+Especially:
+
+```text
+/login
+/signup
+/password-reset
+/verify
+/AI requests
+/admin APIs
+```
+
+Example behavior:
+
+```text
+Normal traffic
+      ↓
+Request accepted
+
+Suspicious repeated requests
+      ↓
+Throttle / temporary block
+```
+
+Return appropriate HTTP `429 Too Many Requests`.
+
+---
+
+# 13. Command Launcher Security
+
+NINJA accepts commands such as:
+
+```text
+open YouTube
+open GitHub
+open WhatsApp
+open Instagram
+search Next.js
+```
+
+Secure command processing.
+
+Do NOT execute arbitrary shell commands from user input.
+
+Never allow commands such as:
+
+```text
+rm
+delete files
+execute shell commands
+run arbitrary JavaScript
+execute system commands
+```
+
+unless there is an explicitly designed and securely sandboxed feature.
+
+Use an allowlist for supported destinations/actions.
+
+Example:
+
+```javascript
+const allowedApps = {
+  youtube: "...",
+  github: "...",
+  whatsapp: "...",
+  instagram: "...",
+  linkedin: "...",
+  gmail: "..."
+};
+```
+
+Unknown commands should be handled safely instead of executed.
+
+---
+
+# 14. URL Security
+
+When users provide URLs:
+
+* Validate URLs
+* Allow only expected protocols such as HTTPS
+* Prevent `javascript:` URLs
+* Prevent dangerous redirects
+* Avoid open redirect vulnerabilities
+
+Never blindly redirect users to arbitrary destinations.
+
+---
+
+# 15. AI Security
+
+If NINJA includes Gemini/AI functionality:
+
+Implement:
+
+* Server-side API key protection
+* Input length limits
+* Request rate limiting
+* Abuse prevention
+* Safe error handling
+* Token/request limits
+* Logging of security-relevant events without storing sensitive user content unnecessarily
+
+Never expose the Gemini API key to the browser.
+
+---
+
+# 16. Privacy
+
+Follow data minimization.
+
+Only store information that the application actually needs.
+
+Do not unnecessarily store:
+
+* passwords
+* API keys
+* private tokens
+* sensitive command history
+* unnecessary personal information
+
+If command history is stored, provide a clear mechanism for users to delete it.
+
+---
+
+# 17. Error Handling
+
+Production errors must NOT expose:
+
+```text
+database connection strings
+stack traces
+environment variables
+API keys
+internal filesystem paths
+authentication details
+```
+
+Use safe production errors such as:
+
+```json
+{
+  "success": false,
+  "message": "Something went wrong."
+}
+```
+
+Keep detailed errors in secure server-side logs.
+
+---
+
+# 18. Logging & Monitoring
+
+Create security-focused logging.
+
+Track events such as:
+
+```text
+Failed login
+Successful login
+Password reset request
+Admin authentication
+Suspicious API activity
+Rate-limit violations
+Unauthorized access attempts
+```
+
+Do NOT log passwords, API keys, tokens, or other secrets.
+
+---
+
+# 19. Dependency Security
+
+Review all dependencies.
+
+Run:
+
+```bash
+npm audit
+```
+
+Remove unnecessary packages.
+
+Use maintained versions.
+
+Do not introduce unnecessary third-party dependencies.
+
+---
+
+# 20. Environment Configuration
+
+Create:
+
+```text
+.env
+.env.example
+```
+
+`.env` must contain real secrets.
+
+`.env.example` should contain placeholders only.
+
+Example:
+
+```env
+PORT=5000
+MONGODB_URI=
+JWT_SECRET=
+GEMINI_API_KEY=
+FRONTEND_URL=
+```
+
+Add:
+
+```text
+.env
+```
+
+to `.gitignore`.
+
+Verify that no secrets exist in Git history or frontend bundles.
+
+---
+
+# 21. Admin Security
+
+If NINJA has an admin dashboard:
+
+Implement:
+
+* Separate admin authorization
+* Strong admin authentication
+* Role verification on backend
+* Rate limiting
+* Secure session handling
+* Protected admin APIs
+* Audit logs for important admin actions
+
+Frontend route hiding is NOT sufficient.
+
+---
+
+# 22. Dependency & Build Protection
+
+Production build must:
+
+* Disable unnecessary debug information
+* Avoid exposing secrets through source maps
+* Remove development credentials
+* Use production environment variables
+* Minimize unnecessary exposed API information
+
+---
+
+# 23. Security Testing
+
+Before declaring the project production-ready, test:
+
+### Authentication
+
+* Invalid password
+* Expired token
+* Invalid token
+* Missing token
+* Repeated login attempts
+
+### Authorization
+
+* Normal user attempting admin API
+* Accessing another user's data
+* Manipulating user IDs
+
+### Input Security
+
+* XSS payloads
+* NoSQL injection attempts
+* Malformed JSON
+* Extremely large input
+
+### API Security
+
+* Missing authentication
+* Invalid authentication
+* Rate-limit testing
+* Unauthorized endpoint access
+
+### URL Security
+
+* `javascript:` URLs
+* Malicious redirects
+* Unsupported protocols
+
+### Secrets
+
+Search the repository for:
+
+```text
+API_KEY
+SECRET
+PASSWORD
+TOKEN
+MONGODB_URI
+PRIVATE_KEY
+```
+
+Ensure no real credentials are committed.
+
+---
+
+# 24. Secure Architecture
+
+Use this architecture:
+
+```text
+                 INTERNET
+                    │
+                    ▼
+              HTTPS / TLS
+                    │
+                    ▼
+             NINJA FRONTEND
+                    │
+                    ▼
+             SECURITY LAYER
+        ┌───────────┼───────────┐
+        │           │           │
+   Rate Limit   Validation   CORS
+        │           │           │
+        └───────────┼───────────┘
+                    ▼
+             AUTHENTICATION
+                    │
+                    ▼
+             AUTHORIZATION
+                    │
+                    ▼
+              NINJA BACKEND
+               │          │
+               │          │
+               ▼          ▼
+           DATABASE     AI API
+                          │
+                     Private API Key
+```
+
+---
+
+# 25. Security UX
+
+Security should not make NINJA difficult to use.
+
+Keep the current clean interface.
+
+Show clear messages such as:
+
+```text
+Session expired. Please sign in again.
+```
+
+instead of technical errors.
+
+For suspicious activity:
+
+```text
+Too many requests. Please try again later.
+```
+
+Do not expose internal security details to users.
+
+---
+
+# 26. Security Acceptance Criteria
+
+The implementation is complete only when:
+
+* HTTPS is enabled in production.
+* Passwords are securely hashed.
+* Authentication is protected.
+* Authorization is enforced server-side.
+* JWT/session security is implemented correctly.
+* API endpoints are protected.
+* Rate limiting exists for sensitive endpoints.
+* CORS is restricted.
+* User input is validated and sanitized.
+* XSS protections are implemented.
+* Security headers are configured.
+* Database credentials are private.
+* API keys are server-side only.
+* `.env` is excluded from Git.
+* NINJA commands cannot execute arbitrary system commands.
+* Dangerous URLs are rejected.
+* Admin APIs are protected.
+* Production errors don't expose secrets.
+* Security events are logged safely.
+* Dependencies are checked for known vulnerabilities.
+* No secrets are present in the public repository.
+* Existing NINJA functionality continues working.
+* Mobile and desktop UI remain functional.
+
+---
+
+# FINAL REQUIREMENT
+
+Do not simply claim that NINJA is secure.
+
+Actually inspect the existing project architecture and implement the required security protections.
+
+If the current architecture is insecure, refactor it properly.
+
+After implementation, provide a concise:
+
+```text
+SECURITY AUDIT REPORT
+
+Authentication: PASS/NEEDS FIX
+Authorization: PASS/NEEDS FIX
+API Security: PASS/NEEDS FIX
+Input Validation: PASS/NEEDS FIX
+Database Security: PASS/NEEDS FIX
+Secret Protection: PASS/NEEDS FIX
+CORS: PASS/NEEDS FIX
+Rate Limiting: PASS/NEEDS FIX
+Security Headers: PASS/NEEDS FIX
+Command Security: PASS/NEEDS FIX
+AI/API Key Security: PASS/NEEDS FIX
+Dependency Security: PASS/NEEDS FIX
+Production Readiness: PASS/NEEDS FIX
+```
+
+For every `NEEDS FIX`, explain exactly what remains and implement the fix where possible.
+
+Do not remove existing NINJA features merely to simplify security.
