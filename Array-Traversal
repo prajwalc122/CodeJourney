@@ -1,0 +1,56 @@
+1. Array Traversal
+What is Traversal?
+Traversal means visiting each element of an array one by one.
+Example:
+arr = [10, 20, 30, 40, 50]
+Traversal means:
+10 → 20 → 30 → 40 → 50
+We visit every element.
+Method 1: Using for loop
+arr = [10, 20, 30, 40, 50]
+
+for value in arr:
+    print(value)
+Output:
+10
+20
+30
+40
+50
+Here:
+for value in arr:
+means:
+Take each element from arr one by one and store it temporarily in value.
+Method 2: Traversal using Index
+Remember:
+Array:   10   20   30   40   50
+Index:    0    1    2    3    4
+Code:
+arr = [10, 20, 30, 40, 50]
+
+for i in range(len(arr)):
+    print(arr[i])
+How it works
+First:
+i = 0
+arr[0] = 10
+Then:
+i = 1
+arr[1] = 20
+Then:
+i = 2
+arr[2] = 30
+and so on.
+Why do we use Index Traversal?
+Because many DSA problems require the index.
+Example:
+arr = [10, 20, 30, 40, 50]
+
+for i in range(len(arr)):
+    print("Index:", i, "Value:", arr[i])
+Output:
+Index: 0 Value: 10
+Index: 1 Value: 20
+Index: 2 Value: 30
+Index: 3 Value: 40
+Index: 4 Value: 50
