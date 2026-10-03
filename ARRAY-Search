@@ -1,0 +1,36 @@
+Array Search in Python
+Search ಅಂದರೆ:
+Array ಒಳಗೆ ಒಂದು particular element/value ಇದೆಯಾ? ಇದ್ದರೆ ಅದು ಯಾವ indexನಲ್ಲಿ ಇದೆ?
+Example:
+arr = [10, 20, 30, 40, 50]
+
+target = 30
+ಇಲ್ಲಿ 30 ಅನ್ನು search ಮಾಡಬೇಕು.
+1. Linear Search
+Linear Search ಅಂದರೆ array ಅನ್ನು ಮೊದಲ elementನಿಂದ last elementವರೆಗೆ ಒಂದೊಂದಾಗಿ check ಮಾಡುವುದು.
+[10, 20, 30, 40, 50]
+ ↑
+Check 10 → target ಅಲ್ಲ
+
+     ↑
+Check 20 → target ಅಲ್ಲ
+
+          ↑
+Check 30 → Found
+Python Code
+arr = [10, 20, 30, 40, 50]
+
+target = 30
+
+for i in range(len(arr)):
+    if arr[i] == target:
+        print("Found at index", i)
+        break
+Output:
+Found at index 2
+Algorithm
+1. Start from index 0
+2. Compare arr[i] with target
+3. If equal → Found
+4. Otherwise → move to next element
+5. Continue until array ends
